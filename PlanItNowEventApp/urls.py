@@ -1,0 +1,47 @@
+from django.urls import path
+from .import views
+
+urlpatterns = [
+    path('',views.home,name='home'),
+    path('eventpage/',views.eventpage,name='eventpage'),
+    # path('showalldetails',views.showdetails),
+    # path('delete/<int:id>/',views.deletecust),
+    # path('edit/<int:id>/',views.edits),
+    # path('add/',views.addevent,name='AddEvent'),
+    # path('showalleventdetails',views.showeventdetails,name='update'),
+    # path('deletes/<int:id>/',views.deleteevent),
+    # path('edits/<int:id>/',views.editevent),
+    path('category/<int:id>/',views.eventcategory,name='cat'),
+    path('reg/',views.register,name='register'),
+    path('loginuser/',views.loginuser,name='loginuser'),
+    path('logout/',views.signout,name='signout'),
+    path('card/<int:id>/',views.viewCards,name='viewcards'),
+    path('addtocart/<int:id>/',views.addtocart,name='addtocart'),
+    path('viewcart/',views.viewcart,name='viewcart'),
+    path('addevent/',views.addevent,name='addevent'),
+    path('updateevent/<int:id>/',views.updateevent,name='updateevent'),
+    path('updateevents/',views.updateevents,name='updateevents'),
+    path('deleteevent/<int:id>/',views.deleteeventcrud,name='deleteevent'),
+    path('changeqty/<qv>/<id>/',views.changeqty),
+    path('eventchangeqty/<qv>/<id>/',views.eventchangeqty),
+    path('removeevent/<int:id>/',views.removeevent,name='removeevent'),
+    path('searchanything/',views.searchanything,name='searchanything'),
+    path('checkout/<int:id>/',views.checkout,name='checkout'),
+    path('checkoutdetails/',views.checkoutdetail,name='checkoutdetail'),
+    path('paypalsuccess/',views.paypalsuccess,name='paypalsuccess'),
+    path('paypalfailed',views.paypalfailed,name='paypalfailed'),
+    path('booking/',views.booking,name='booking'),
+    path('aboutus/',views.aboutus,name='aboutus'),
+    path('contactus/',views.contactus,name='contactus'),
+    path('range',views.range,name='range'),
+    path('drf_crud/',views.crudapi.as_view()),
+    path('services/',views.services,name='services'),
+    path('forgotpass/',views.forgotpassword,name='forgotpassword'),
+    path('resetpassword/',views.resetpassword,name='resetpassword'),
+    path('verifyotp/',views.verifyotp,name='verifyotp'),
+    path('profile/', views.profileView, name='profile'),
+    path('edit-profile/', views.editProfileview, name='edit_profile'),
+    
+
+]
+
