@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block  "main" %}
+<style>
+.navbar {
+        font-family: 'Poppins', sans-serif;
+        background: #fff;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        position: relative;
+        z-index: 1000;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+
+    .main-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.first h1 {
+    text-align: center;
+    color: #e5a01f;
+    margin-bottom: 20px;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.first p {
+    text-align: center;
+    color: #030303;
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+.services {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.service-card {
+    width: 30%;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    margin-bottom:50px;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.service-card h4 {
+    color: #e5a01f;
+    font-weight: bold;
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+.service-card p {
+    color: #555;
+    font-size: 16px;
+}
+
+
+@media (max-width: 1024px) {
+    .service-card {
+        width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .service-card {
+        width: 100%; 
+    }
+    
+    h1 {
+        font-size: 28px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+}
+
+</style>
+<div class="first">
+    <h1 style="margin-top: 50px;  font-weight: bold;">Our Services</h1>
+    <p>We provide comprehensive event management services to make your special occasions memorable and stress-free.</p>
+</div>
+<div class="container">
+    <div class="services">
+    
+    <!-- Corporate Events -->
+    <div class="service-card">  
+        <img src="{% static 'images/Corporateevents.jpg' %}" width="100px" height="300px" alt="Corporate Events">  
+        <h4>Corporate Events</h4>  
+        <p>From business conferences to networking events, we provide seamless ticketing and guest management solutions.</p>  
+    </div>  
+
+    <!-- Entertainment Events -->
+    <div class="service-card">  
+        <img src="{% static 'images/entertainmentevent.jpeg' %}" width="100px" height="300px" alt="Entertainment Events">  
+        <h4>Entertainment Events</h4>  
+        <p>Sell tickets for concerts, movie screenings, comedy shows, and more with our easy-to-use platform.</p>  
+    </div>  
+
+    <!-- Educational Events -->
+    <div class="service-card">  
+        <img src="{% static 'images/Educationevent.webp' %}" width="100px" height="300px" alt="Educational Events">  
+        <h4>Educational Events</h4>  
+        <p>Host and manage seminars, workshops, and academic conferences with our specialized ticketing system.</p>  
+    </div>  
+
+    <!-- Cultural Events -->
+    <div class="service-card">  
+        <img src="{% static 'images/Culturalevent.webp' %}" width="100px" height="300px" alt="Cultural Events">  
+        <h4>Cultural Events</h4>  
+        <p>Manage and sell tickets for cultural festivals, art exhibitions, and heritage events easily.</p>  
+    </div>  
+
+    <!-- Social Events -->
+    <div class="service-card">  
+        <img src="{% static 'images/socialevent.webp' %}" width="100px" height="300px" alt="Social Events">  
+        <h4>Social Events</h4>  
+        <p>From fundraising events to community gatherings, we offer ticketing solutions for social causes.</p>  
+    </div>  
+
+    <!-- Other Events -->
+    <div class="service-card">  
+        <img src="{% static 'images/Others.jpeg' %}" width="100px" height="300px" alt="Other Events">  
+        <h4>Other Events</h4>  
+        <p>Need custom ticketing solutions for unique events? We cater to all event types with flexible features.</p>  
+    </div>  
+    </div>  
+</div>
+</div>
+</div>
+{% endblock "main" %}
+
+

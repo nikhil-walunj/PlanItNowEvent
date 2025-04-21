@@ -1,0 +1,303 @@
+{% load static %}
+<marquee behavior="right" direction="" speed="fast" style="background-color: black; color: white; padding: 10px; font-weight: bold;">
+    PLANITNOW.COM IS YOUR ULTIMATE DESTINATION FOR SEAMLESS EVENT BOOKING & MANAGEMENT! PLAN, BOOK, ORGANIZE AND CELEBRATE YOUR EVENTS EFFORTLESSLY WITH US !!!
+</marquee>
+
+<!-- Navbar Section -->
+<nav class="navbar">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <div class="logo">
+            <a href="{% url 'home' %}"><img src="{% static 'Images/PlanItNow.png' %}" alt="PlanItNow Logo"></a>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'eventpage' %}">Events</a></li>
+            <li><a href="{% url 'services' %}">Services</a></li>
+            <li><a href="{% url 'aboutus' %}">About Us</a></li>
+            <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'booking' %}">Booking History</a></li>
+                
+            {% endif %}
+        </ul>
+
+        <!-- Search Bar -->
+        <form class="search-box" method="POST" action="{% url 'searchanything' %}">
+            {% csrf_token %}
+            <input type="text" name="search" placeholder="Search events..." required />
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+
+        <!-- Right Side Icons -->
+        <div class="right-icons">
+            <a href="{% url 'viewcart' %}" class="wishlist-icon"><i class="fas fa-heart"></i></a>
+            
+            <!-- Account Dropdown -->
+            <div class="dropdown">
+                <button class="account-btn"><i class="fas fa-user"></i></button>
+                <ul class="dropdown-menu">
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}">Profile</a></li>
+                       
+                        <li><a href="{% url 'signout' %}">Logout</a></li>
+                        {% if user.is_superuser %}
+                            <li><a href="{% url 'addevent' %}">Add Events</a></li>
+                            <li><a href="{% url 'updateevents' %}">Update Events</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li><a href="{% url 'loginuser' %}">Login</a></li>
+                        <li><a href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        </div>
+        
+    </div>
+</nav>
+
+<!-- Navbar Styles -->
+<style>
+    /* Base Navbar Styling */
+    body {
+    font-family: 'Poppins', sans-serif;
+    color: #222;
+    overflow-x: hidden;
+}
+    .navbar {
+        font-family: 'Poppins', sans-serif;
+        background: #fff;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+       
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        position: relative;
+        z-index: 1000;
+    }
+
+    .container-fluid {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        justify-content: space-between;
+        margin:0;
+        padding:0;
+        
+    }
+
+    /* Logo */
+    .logo {
+        flex: 0 0 auto; /* Prevents logo from shrinking */
+        margin-right: auto; /* Push everything else to the right */
+    }
+
+    .logo img {
+        height: 70px;
+        display: block;
+        scale:1.3;
+        
+    }
+
+    /* Navigation Links */
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+        flex: 1; /* Allows nav-links to use available space */
+        justify-content: center; /* Keep it centered */
+    }
+
+    .nav-links li a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .nav-links li a:hover {
+        color: #ff7f50;
+    }
+
+    /* Search Bar */
+    .search-box {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        justify-content: flex-end;
+        max-width: 350px;
+    }
+
+    .search-box input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 250px;
+        transition: border-color 0.3s ease;
+    }
+
+    .search-btn {
+        padding: 8px 12px;
+        background: black !important;
+        color: white !important;
+        height: 40px;
+        width: 90px;
+        border: none;
+        cursor: pointer;
+        margin-left: 5px;
+        border-radius: 4px;
+    }
+
+    /* Right Icons */
+    .right-icons {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-left: 20px;
+        flex-shrink: 0;
+    }
+
+    .wishlist-icon i {
+        font-size: 30px;
+        color: #ff7f50;
+    }
+
+    .account-btn {
+        background: none;
+        border: none;
+        font-size: 26px;
+        cursor: pointer;
+    }
+
+    /* Dropdown */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        right: 0;
+        min-width: 150px;
+        list-style: none;
+        padding: 10px;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-menu li {
+        padding: 5px 10px;
+    }
+
+    .dropdown-menu li a {
+        text-decoration: none;
+        color: black;
+        display: block;
+    }
+
+    .dropdown-menu li a:hover {
+        font-weight: bold;
+        color: black;
+        border-radius: 3px;
+    }
+
+    .menu-toggle{
+        display: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .logo img {
+            height: 60px;
+        }
+
+        .nav-links {
+            gap: 15px;
+        }
+
+        .search-box input {
+            width: 200px;
+        }
+
+        .search-btn {
+            width: 80px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .container {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .logo img {
+            margin: 0 auto;
+        }
+
+        .nav-links {
+            flex-direction: column;
+            text-align: center;
+            width: 100%;
+            gap: 10px;
+            display: none;
+        }
+
+        .nav-links.active {
+            display: flex;
+        }
+
+        .search-box {
+            width: 100%;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .right-icons {
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: block;
+            cursor: pointer;
+            font-size: 28px;
+            margin-left: auto;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .search-box input {
+            width: 100%;
+        }
+
+        .search-btn {
+            width: auto;
+        }
+
+        .wishlist-icon i,
+        .account-btn {
+            font-size: 22px;
+        }
+    }
+</style>
+
+
+<!-- FontAwesome Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

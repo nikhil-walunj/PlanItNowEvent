@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block "title" %}{% endblock "title" %}
+
+{% block "main" %}
+<style>
+    body {
+        background-color: #fff;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .header-box {
+        background-color: black;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        border-radius: 10px;
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container1 {
+        max-width: 900px;
+        margin: 30px auto;
+        background-color: #fff;
+        border: 2px solid black;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-group {
+        flex: 1 1 45%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: black;
+    }
+
+    input, select, textarea {
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 8px;
+        font-size: 15px;
+        margin-bottom: 15px;
+        background-color: white;
+        color: black;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    .form-actions {
+        text-align: center;
+        margin-top: 20px;
+       
+    }
+
+    .btn-custom {
+        background-color: black;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        margin: 0 10px;
+        cursor: pointer;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        display: inline-block;
+        
+    }
+
+    .btn-custom:hover {
+        background-color: #333;
+        transform: scale(1.05);
+    }
+
+    .img-preview {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .img-preview img {
+        width: 200px;
+        border: 2px solid black;
+        border-radius: 10px;
+    }
+
+    .alert {
+        border-radius: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .form-group {
+            flex: 1 1 100%;
+        }
+
+        .btn-custom {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="header-box">✏️ Update Event Details</div>
+</div>
+
+<div class="form-container1">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <strong>There were some errors in your form:</strong>
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ field|capfirst }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div class="form-row">
+            {% for field in form.visible_fields %}
+            <div class="form-group" style="{% if field.name == 'eventDesc' or field.name == 'eventImage' %}flex: 1 1 100%;{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                <small class="text-muted">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if form.instance.eventImage %}
+        <div class="img-preview">
+            <div>
+                <p class="text-center"><strong>Current Image:</strong></p>
+                <img src="{{ form.instance.eventImage.url }}" alt="Event Image">
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn-custom">Update Event</button>
+            <a href="{% url 'eventpage' %}" class="btn-custom">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock "main" %}

@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block "main" %}
+<style>
+  body {
+      background-color: #fff;
+      color: #222;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+  }
+
+  .event-card-sec {
+      text-align: center;
+      padding: 50px 0;
+  }
+
+  .event-card-sec h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #000;
+      text-transform: uppercase;
+  }
+
+  /* Category Buttons */
+  .list-cat {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+  }
+
+  .list-catitem a {
+      padding: 10px 18px;
+      background: #000;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: all 0.3s ease-in-out;
+      display: inline-block;
+  }
+
+  .list-catitem a:hover {
+      background: #222;
+      transform: scale(1.05);
+  }
+
+  /* Filter Form */
+  form {
+      max-width: 600px;
+      margin: 30px auto;
+      text-align: left;
+  }
+
+  form h5 {
+      font-weight: bold;
+  }
+
+  .form-control {
+      border-radius: 6px;
+  }
+
+  .btn-primary {
+      background-color: #000;
+      border: none;
+      font-weight: bold;
+  }
+
+  .btn-primary:hover {
+      background-color: #222;
+  }
+
+  /* Event Card Styling */
+
+  #event-scroll-container::-webkit-scrollbar {
+  width: 8px;
+  }
+  
+  #event-scroll-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  #event-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .card {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      max-width: 22rem;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f9f9f9;
+      border: 2px solid #000;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+  }
+
+  .card:hover {
+      transform: translateY(-5px);
+  }
+
+  .card img {
+      height: 300px;
+      object-fit: cover;
+      width: 100%;
+  }
+
+  .card-body h5 {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #000;
+  }
+
+  .card-text {
+      font-size: 1rem;
+      color: #333;
+  }
+
+  .card-text.text-danger {
+      color: black;
+      font-weight: bold;
+  }
+
+  /* Star Rating */
+  .rating-star i {
+      color: gold;
+  }
+
+  .rating-star span {
+      font-weight: bold;
+      color: black;
+      margin-left: 5px;
+  }
+
+  /* Buttons */
+  .card-footer .btn {
+      background: #000;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: 0.3s;
+      padding: 10px 15px;
+      border: none;
+      display: inline-block;
+      margin: 4px 0;
+  }
+
+  .card-footer .btn:hover {
+      background: #222;
+  }
+
+  @media (max-width: 768px) {
+      .event-card-sec h1 {
+          font-size: 2rem;
+      }
+  }
+</style>
+
+<!-- Event Section -->
+<div class="main-content">
+  <div class="event-card-sec">
+    <h1>Explore Top Events</h1>
+
+    <!-- Categories -->
+    <div class="list-cat">
+      {% for i in category %}
+      <div class="list-catitem">
+        <a href="{% url 'cat' i.id %}">{{ i.categoryName }}</a>
+      </div>
+      {% endfor %}
+      <div class="list-catitem">
+        <a href="{% url 'eventpage' %}" class="btn btn-dark">See All Events</a>
+      </div>
+    </div>
+
+    <!-- Price Filter -->
+    <form action="{% url 'range' %}" method="get">
+      <h5>Filter By Price</h5>
+      <hr>
+      <div class="mb-3">
+        <label for='Input1' class="form-label">Minimum Price</label>
+        <input type="number" class="form-control" id="Input1" name="min" placeholder="Enter Minimum Price">
+      </div>
+      <div class="mb-3">
+        <label for='Input2' class="form-label">Maximum Price</label>
+        <input type="number" class="form-control" id="Input2" name="max" placeholder="Enter Maximum Price">
+      </div>
+
+      <div class="mb-3">
+      <label for="sort" class="form-label">Sort By</label>
+      <select name="sort" id="sort" class="form-select">
+          <option value="">-- Select --</option>
+          <option value="price_asc" {% if request.GET.sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+          <option value="price_desc" {% if request.GET.sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+          <option value="rating_asc" {% if request.GET.sort == 'rating_asc' %}selected{% endif %}>Rating: Low to High</option>
+          <option value="rating_desc" {% if request.GET.sort == 'rating_desc' %}selected{% endif %}>Rating: High to Low</option>
+      </select>
+      </div>
+
+      <div class="mb-3 text-center">
+        <button type="submit" class="btn btn-primary">Filter Events</button>
+      </div>
+    </form>
+
+    <!-- Event Cards -->
+    <div class="container" style="max-height: 700px; overflow-y: auto;" id="event-scroll-container">
+      <div class="row">
+        {% for event in events %}
+        <div class="col-md-3 d-flex justify-content-center mb-4">
+          <div class="card">
+            <img src="{{ event.eventImage.url }}" class="card-img-top" alt="{{ event.eventTitle }}">
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ event.eventTitle | upper }}</h5>
+              <p class="card-text"><strong>Category:</strong> {{ event.eventCategory }}</p>
+              <p class="card-text"><strong>Price:</strong> $ {{ event.eventPrice }}/-</p>
+
+              <!-- Star Rating -->
+              <div>
+                  {% for i in "12345"|make_list %}
+    {% if forloop.counter <= event.eventRating %}
+        <span class="text-warning" style="font-size: 22px;">★</span> <!-- Full Star -->
+    {% elif forloop.counter|add:"-0.5" <= event.eventRating %}
+        <span class="text-warning" style="font-size: 22px;">⯪</span> <!-- Half Star -->
+    {% else %}
+        <span class="text-secondary" style="font-size: 22px;">☆</span> <!-- Empty Star -->
+    {% endif %}
+{% endfor %}
+<span>({{ event.eventRating }})</span>
+              </div>
+            </div>
+     
+
+            {% if event.is_sold_out %}
+                <span class="btn btn-danger disabled">Sold Out</span>
+            {% else %}
+            <div class="card-footer text-center">
+              <a href="{% url 'viewcards' event.id %}" class="btn">Show More Details</a>
+            </div>
+            {% endif %}
+            
+            {% if user.is_authenticated and user.is_superuser %}
+            <div class="card-footer text-center">
+              <a href="{% url 'updateevent' event.id %}" class="btn">Update Event</a>
+            </div>
+            <div class="card-footer text-center">
+              <a href="{% url 'deleteevent' event.id %}" class="btn">Delete Event</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock "main" %}
+
+{% include "footer.html" %}

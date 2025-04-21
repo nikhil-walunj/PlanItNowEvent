@@ -1,0 +1,109 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(to right, #e0f7fa, #ffffff);
+        padding: 20px;
+    }
+    .container {
+        background: white;
+        max-width: 600px;
+        margin: auto;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    .success-message {
+        color: #2e7d32;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .details-card {
+        text-align: left;
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .customer-details {
+        background: #e8f5e9;
+    }
+    .order-details {
+        background: #fbe9e7;
+    }
+    .details-card h3 {
+        color: #333;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .details-card p {
+        font-size: 16px;
+        color: #555;
+        margin: 5px 0;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 20px;
+        background: #2e7d32;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    .btn:hover {
+        background: #1b5e20;
+    }
+    .logo img {
+        width: 180px;
+        margin-bottom: 10px;
+    }
+</style>
+
+{% load static %}
+
+{% block "title" %} 
+{% endblock "title" %}
+
+{% block "main" %}
+<div class="banner">
+    <div class="logo">
+        <img src="{% static 'Images/PlanItNow.png' %}" alt="PlanItNow Logo">
+    </div>
+</div>
+
+<div class="container">
+    <div class="success-message">✅ Payment Successful!</div>
+
+    <!-- Customer Details -->
+    <div class="details-card customer-details">
+        <h3>👤 Customer Information</h3>
+        <p><strong>Name:</strong> {{ custformdetail.name }}</p>
+        <p><strong>Email:</strong> {{ custformdetail.email }}</p>
+        <p><strong>Phone:</strong> {{ custformdetail.phone }}</p>
+        <p><strong>State:</strong> {{ custformdetail.state }}</p>
+        <p><strong>City:</strong> {{ custformdetail.city }}</p>
+        <p><strong>Booking Date:</strong> {{ custformdetail.ticket_buy_date_time }}</p>
+    </div>
+
+    <!-- Order Details -->
+    <div class="details-card order-details">
+        <h3>🎟 Order Summary</h3>
+        {% if bookings %}
+            <p><strong>Event:</strong> {{ bookings.event.eventTitle }}</p>
+            <p><strong>Transaction ID:</strong> {{ bookings.transaction_id }}</p>
+            <p><strong>Buy Tickets:</strong> {{ bookings.quantity }}</p>
+            <p><strong>Amount Paid:</strong> Rs. {{ bookings.amount_paid }}</p>
+            <p><strong>Payment Date:</strong> {{ bookings.payment_date }}</p>
+            <p><strong>Payment Status:</strong> {{ bookings.payment_status }}</p>
+        {% else %}
+            <p>No order details found.</p>
+        {% endif %}
+    </div>
+
+    <a href="/" class="btn">🏠 Return to Home</a>
+</div>
+
+{% endblock "main" %}

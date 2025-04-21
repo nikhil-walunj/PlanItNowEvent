@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block "main" %}
+<style>
+/* Page Background */
+body {
+    background-color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Title */
+h2 {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+}
+
+/* Card Layout */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    padding: 10px 20px;
+}
+
+/* Booking Card */
+.card {
+    border: 2px solid black;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    background: white;
+    text-align: left;
+    width: 100%;
+    max-width: 20rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Event Image */
+.card-img-top {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+/* Card Body */
+.card-body {
+    padding: 15px;
+    color: #000;
+    flex-grow: 1;
+}
+
+/* Card Footer */
+.card-footer {
+    background: white;
+    border-top: none;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 7px 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 20px;
+    text-transform: uppercase;
+    color: white;
+}
+
+.status-success {
+    background: black;
+}
+
+.status-failed {
+    background: red;
+}
+
+/* Empty State */
+.no-events-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40vh;
+}
+
+.no-events-container img {
+    width: 280px;
+    height: auto;
+    opacity: 0.9;
+}
+
+/* Continue Booking Button */
+.continue-booking-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.continue-booking-btn {
+    background-color: black;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.continue-booking-btn:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+#card-scroll-container {
+    padding-right: 10px; 
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card-container {
+        justify-content: center;
+    }
+    .no-events-container img {
+        width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .continue-booking-btn {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+}
+</style>
+
+<h2 class="mb-4">📜 Your Booking History</h2>
+
+{% if bookings %}
+<div style="max-height: 90vh; overflow-y: auto;" id="card-scroll-container">
+<div class="card-container">
+    {% for book in bookings %}
+    <div class="card">
+        <img src="{{ book.event.eventImage.url }}" class="card-img-top" alt="Event Image"
+             onerror="this.onerror=null;this.src='{% static 'images/default-event.jpg' %}';">
+        <div class="card-body">
+            <h5 class="card-title fw-bold">{{ book.event.eventTitle|upper }}</h5>
+            <p class="card-text"><strong>🎭 Category:</strong> {{ book.event.eventCategory.categoryName }}</p>
+            <p class="card-text"><strong>🎟️ Tickets:</strong> {{ book.quantity }}</p>
+            <p class="card-text"><strong>💰 Total Amount:</strong> ₹ {{ book.amount_paid }}/-</p>
+            <p class="card-text"><strong>📅 Payment Date:</strong> {{ book.payment_date|date:"d M Y, H:i A" }}</p>
+        </div>
+        <div class="card-footer">
+            <span class="status-badge {% if book.payment_status == 'Booking Successfull' %}status-success{% else %}status-failed{% endif %}">
+                {{ book.payment_status }}
+            </span>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+{% else %}
+<div class="no-events-container">
+    <img src="{% static 'Images/NoEventFound.png' %}" alt="No Events Found">
+</div>
+{% endif %}
+
+<div class="continue-booking-container">
+    <a href="{% url 'eventpage' %}" class="continue-booking-btn">
+        <span>↩️</span> Continue Booking
+    </a>
+</div>
+{% endblock "main" %}
+

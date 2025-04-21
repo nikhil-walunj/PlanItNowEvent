@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block "title" %}{% endblock "title" %}
+
+{% block "main" %}
+<style>
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #121212;
+    color: #ffffff;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/static/Images/ExploreEvent.png') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 120px 20px;
+}
+
+.hero-section h1 {
+    font-size: 42px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.btn-custom {
+    background: #DAA520;
+    color: white;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-custom:hover {
+    background-color: #b8860b;
+    transform: scale(1.05);
+}
+
+/* Features Section */
+.features-section .card {
+    background: #1e1e1e;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+    transition: 0.3s ease-in-out;
+}
+
+.features-section .card:hover {
+    background: #DAA520;
+    color: black;
+    transform: translateY(-5px);
+}
+
+/* Our Process Section */
+.our-process {
+    padding: 60px 0;
+    background-color: #222;
+    text-align: center;
+}
+
+.our-process h2 {
+    color: #DAA520;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+.our-process .step {
+    background: #1e1e1e;
+    color: white;
+    margin: 12px 0;
+    padding: 14px;
+    border-radius: 8px;
+    border-left: 5px solid #DAA520;
+    transition: 0.3s;
+}
+
+.our-process .step:hover {
+    background: #333;
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 32px;
+    }
+
+    .features-section .card,
+    .our-process .step {
+        text-align: center;
+    }
+}
+
+</style>
+
+<!-- ✅ Hero Section -->
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="fw-bold">Welcome to PlanItNow</h1>
+        <p class="lead">Your trusted platform for seamless event booking and management.</p>
+        <a href="#contact" class="btn btn-custom mt-3">
+            <i class="bi bi-telephone-fill"></i> Contact Us
+        </a>
+    </div>
+</section>
+
+<!-- ✅ Why Choose Us -->
+<section class="features-section text-center py-5">
+    <div class="container">
+        <h2>Why Choose Us?</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h4>📅 Easy Booking</h4>
+                    <p>Book events effortlessly with our streamlined booking process.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h4>🔒 Secure Transactions</h4>
+                    <p>Your payments are safe with our encrypted transaction system.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h4>🎉 Customizable Events</h4>
+                    <p>Personalize your events with our flexible management tools.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ✅ How It Works -->
+<section class="our-process text-center py-5">
+    <div class="container">
+        <h2>How It Works</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="step p-4">
+                    <h4>🔎 Discover</h4>
+                    <p>Explore our platform to find the perfect event solution tailored to your needs.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step p-4">
+                    <h4>📝 Book</h4>
+                    <p>Select your event type, choose a event, and confirm your booking in few clicks.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step p-4">
+                    <h4>🎊 Enjoy</h4>
+                    <p>Relax and enjoy as we take care of all the event details for you.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock "main" %}

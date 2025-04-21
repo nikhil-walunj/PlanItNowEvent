@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block "title" %} 
+{% endblock "title" %}
+
+{% block "main" %}
+
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #222;
+    overflow-x: hidden;
+}
+
+/* Navbar styles (if needed) */
+.navbar {
+    font-family: 'Poppins', sans-serif;
+    background: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: relative;
+    z-index: 1000;
+}
+
+.container {
+    width: 100%;
+    padding: 15px;
+}
+
+/* No Events Section */
+.no-events-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30vh;
+    text-align: center;
+}
+
+.no-events-container img {
+    width: 280px;
+    height: auto;
+    opacity: 0.9;
+    margin: auto;
+}
+
+/* Continue Booking Button */
+.continue-booking-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.continue-booking-btn {
+    background-color: black;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.continue-booking-btn:hover {
+    background-color: #333;
+    transform: scale(1.05);
+}
+
+/* Card Styles */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .w-25 {
+        width: 80% !important;
+    }
+
+    .card-title {
+        font-size: 18px;
+    }
+
+    .btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    .card-title {
+        font-size: 16px;
+    }
+
+    .no-events-container img {
+        width: 200px;
+        margin: auto;
+    }
+
+    .continue-booking-btn {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+
+    input[type="number"] {
+        width: 60px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+
+    .card-title {
+        font-size: 15px;
+    }
+
+    .continue-booking-btn {
+        font-size: 13px;
+    }
+}
+</style>
+
+
+
+
+
+    <h2 class="text-center mt-4 fw-bold ">Your Wishlist</h2>
+        {% comment %} <h4>Total Items in Cart: {{ totalCount }}</h4> {% endcomment %}
+
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+        {% if events %}
+            {% for event in events %}
+            <div class="card mb-4 shadow-sm p-3" style="border: none;">
+                <div class="row g-0 align-items-center">
+                    
+                    <!-- Left: Event Image -->
+                    <div class="col-md-4">
+                        <img src="{{ event.eid.eventImage.url }}" class="img-fluid rounded" 
+                             alt="Event Image" style="width: 100%; height: auto; object-fit: contain;">
+                    </div>
+
+                    <!-- Right: Event Details -->
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">{{ event.eid.eventTitle | upper }}</h5>
+                            <p class="card-text">{{ event.eid.eventDesc }}</p>
+                            <h5 class="fw-bold">$ {{ event.eid.eventPrice }}/-</h5>
+
+                            <!-- Quantity and Buttons -->
+                            <div class="d-flex align-items-center mt-3">
+                                <a href="/changeqty/0/{{ event.id }}" class="btn btn-dark me-2">-</a>
+                                <input type="number" value="{{ event.qty }}" readonly class="form-control text-center w-25">
+                                <a href="/changeqty/1/{{ event.id }}" class="btn btn-dark ms-2 {% if event.qty >= 5 %}disabled{% endif %}">+</a>
+                                {% if event.qty >= 5 %}
+                                    <small class="text-danger ms-2">Max 5 tickets allowed</small>
+                                {% endif %}
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="mt-3">
+                                <a href="{% url 'viewcards' event.eid.id %}" class="btn btn-outline-dark me-2">View Details</a>
+                                <a href="/removeevent/{{event.id}}" class="btn btn-dark">Remove</a>
+                                <a href="{% url 'checkout' event.eid.id %}" class="btn btn-dark">BOOK NOW</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-events-container">
+                <img src="{% static 'Images/NoEventFound.png' %}" alt="No Events Found">
+            </div>
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+    <!-- Total Amount Section -->
+    <div class="text-center mt-4">
+        <h4 class="fw-bold">Total Amount: $ {{ totalamount }}/-</h4>
+    </div>
+
+    <div class="continue-booking-container">
+    <a href="{% url 'eventpage' %}" class="continue-booking-btn">
+        <span>↩️</span> Continue Booking
+    </a>
+    </div>
+{% endblock "main" %}

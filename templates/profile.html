@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block "title" %}
+
+{% endblock "title" %}
+
+{% block "main" %}
+
+<style>
+.horizontal-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.profile-section {
+    flex: 1 1 10%;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffff;
+    box-shadow: 0 2px 28px rgba(0,0,0,0.1);
+    min-width: 280px;
+    text-align: left;
+}
+
+.profile-section h2 {
+    font-weight: bold;
+}
+
+
+
+.book-section {
+    flex: 1 1 50%;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 28px rgba(0,0,0,0.1);
+    min-width: 300px;
+} 
+
+.book-section h3 {
+    font-weight: bold;
+}
+
+.profile-image {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    border-radius: 10%;
+    margin-bottom: 15px;
+ 
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.booking-table {
+    width: 100%;
+    min-width: 800px; /* Ensures table doesn't shrink too much on small screens */
+    border-collapse: collapse;
+}
+
+.booking-table th,
+.booking-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.booking-table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.book-section.scrollable {
+    overflow-y: auto;
+    max-height: 720px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #999 #eee;
+}
+
+.book-section.scrollable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.book-section.scrollable::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 8px;
+}
+
+/* Make table header sticky */
+.booking-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 2;
+}
+
+@media screen and (max-width: 992px) {
+    .horizontal-layout {
+        flex-direction: column;
+    }
+
+    .profile-section,
+    .book-section {
+        width: 100%;
+    }
+}
+
+
+</style>
+
+<div class="horizontal-layout">
+    <!-- Profile Section -->
+    <div class="profile-section">
+        <h2 class="profile">👤 Your Profile</h2>
+        <img src="{{ profile.profile_image.url }}" class="profile-image" alt="Profile Image">
+        <p><strong>👨 Name:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>📧 Email:</strong> {{ user.email }}</p>
+        <p><strong>📱 Contact:</strong> {{ profile.contact_number }}</p>
+        <p><strong>🎂 Birthday:</strong> {{ profile.birthday }}</p>
+        <p><strong>🚻 Gender:</strong> {{ profile.gender }}</p>
+        <p><strong>🏠 Address:</strong> {{ profile.address_line1 }}, {{ profile.address_line2 }}, {{ profile.landmark }}</p>
+        <p><strong>🏙️ City:</strong> {{ profile.city }}</p>
+        <p><strong>🗺️ State:</strong> {{ profile.state }}</p>
+        <p><strong>📮 Pincode:</strong> {{ profile.area_pincode }}</p>
+        <a href="{% url 'edit_profile' %}" class="btn btn-dark">✏️ Edit Profile</a>
+    </div>
+
+    <!-- Booking Section -->
+    <div class="book-section scrollable">
+    <h3 class="book">🧾 Your Bookings</h3>
+    <p class="mt-3">Total Bookings: {{ bookings.count }}</p>
+    <a href="{% url 'eventpage' %}" class="btn btn-dark">🌍 Explore Events</a>
+    {% if bookings %}
+        <div class="table-responsive">
+            <table class="booking-table">
+                <thead>
+                    <tr>
+                        <th>🖼️ Image</th>
+                        <th>🎭 Event</th>
+                        <th>📍 Venue</th>
+                        <th>💸 Price</th>
+                        <th>🎫 Tickets</th>
+                        <th>💰 Amount Paid</th>
+                        <th>📅 Booking Date</th>
+                        <th>✅ Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>
+                            <img src="{{ booking.event.eventImage.url }}" alt="Event Image" width="60" height="60" style="border-radius: 8px;">
+                        </td>
+                        <td>{{ booking.event.eventTitle }}</td>
+                        <td>{{ booking.event.eventVenue }}</td>
+                        <td>₹ {{ booking.event.eventPrice }}</td>
+                        <td>{{ booking.quantity }}</td>
+                        <td>₹ {{ booking.amount_paid }}</td>
+                        <td>{{ booking.payment_date|date:"d M Y, h:i A" }}</td>
+                        <td>{{ booking.payment_status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    {% else %}
+        <p class="mt-3">No bookings found.</p>
+    {% endif %}
+</div>
+</div>
+
+{% endblock "main" %}
+

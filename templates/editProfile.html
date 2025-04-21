@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block "title" %}
+
+{% endblock "title" %}
+
+{% block "main" %}
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f4f4f4;
+    }
+
+    h2 {
+        text-align: center;
+        margin: 40px 0 20px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-container {
+        max-width: 850px;
+        margin: auto;
+        margin-bottom: 50px;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    .form-group {
+        flex: 1 1 45%;
+    }
+
+    label {
+        font-weight: bold;
+        margin-bottom: 6px;
+        display: block;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="file"],
+    select,
+    textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+
+    .form-buttons {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .btn {
+        padding: 10px 22px;
+        font-size: 16px;
+        border-radius: 8px;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background-color: #000;
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #333;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    @media (max-width: 768px) {
+        .form-group {
+            flex: 1 1 100%;
+        }
+    }
+</style>
+
+<h2>✏️ Edit Profile</h2>
+
+<div class="form-container">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group">{{ form.profile_image.label_tag }}{{ form.profile_image }}</div>
+            <div class="form-group">{{ form.contact_number.label_tag }}{{ form.contact_number }}</div>
+            <div class="form-group">{{ form.birthday.label_tag }}{{ form.birthday }}</div>
+            <div class="form-group">{{ form.gender.label_tag }}{{ form.gender }}</div>
+            <div class="form-group">{{ form.area_pincode.label_tag }}{{ form.area_pincode }}</div>
+            <div class="form-group">{{ form.address_line1.label_tag }}{{ form.address_line1 }}</div>
+            <div class="form-group">{{ form.address_line2.label_tag }}{{ form.address_line2 }}</div>
+            <div class="form-group">{{ form.landmark.label_tag }}{{ form.landmark }}</div>
+            <div class="form-group">{{ form.city.label_tag }}{{ form.city }}</div>
+            <div class="form-group">{{ form.state.label_tag }}{{ form.state }}</div>
+        </div>
+        <div class="form-buttons">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="{% url 'profile' %}" class="btn btn-secondary">Back</a>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock "main" %}
